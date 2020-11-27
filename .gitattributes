@@ -1,0 +1,2 @@
+textgenerator/static/textgenerator/export.pkl filter=lfs diff=lfs merge=lfs -text
+textgenerator/static/textgenerator/export1.pkl filter=lfs diff=lfs merge=lfs -text
