@@ -1,0 +1,91 @@
+
+        {%extends "textgenerator/layout.html"%}
+        {% block body %}
+        
+        <div class="maincontainer">
+            <div class="container">
+                <div = class="intro">
+                    <h1>Welcome</h1><hr>
+                    <p>This is a fake review generator. It is a neural network trained on a collected imdb movies review data. To make it work you simply need to
+                         specify the amount of fake reviews you want to generate. Specify the length of the reviews and add some starter text to be used for the reviews generation.
+                        </p>
+                    <button id="showhide" class="showhide">Hide</button>
+                </div>
+                <div id="inputid" class="inputform">
+                    <div = class="intro">
+                        <form id="inputform" method="post">
+                            {% csrf_token %}
+                            <div = class="centering">
+                                <div class="row">
+                                    <label for="id_paragraphs" class="col-md-6">Paragraphs<br/>
+                                        <input type="number" name="paragraphs" min="1" max="10" required="" id="id_paragraphs">
+                                    </label>
+                                    <label for="id_words" class="col-md-6">Words<br/>
+                                        <input type="number" name="words" min="0" max="100" required="" id="id_words">
+                                    </label>
+                                
+                                </div>
+                                <label for="id_text">Starting Text </label></br>
+                                    <textarea name="text"   required="" id="id_text"></textarea></br>
+                                </label>
+                            </div>
+                                
+                            <input type="submit">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div id="output">
+                
+            </div>
+        </div>
+    <script type="text/javascript">
+
+        let frm = $('#inputform');
+        let button = $('#showhide');
+
+        frm.submit(function (e) {
+            e.preventDefault();
+            $("#inputid").slideUp();
+            $('#showhide').html("Clear and Show");
+            let type =frm.attr('method');
+            let data =frm.serialize();
+            console.log("works");
+            
+            let sentences = document.getElementById("id_paragraphs").value;
+            let output = $("#output");
+            output.append("<div class=\"intro\"><h1>Generated Reviews</h1><p>This might take a while...</p></div>");    
+            for(let i =1; i<=sentences;i++){
+                
+                output.append("<div id=output-" + i + " class =\"intro\"> <h2>Review-" + i + "</h2> <hr>" +"<div class =\"loader\"/></div>");
+            };
+            for(let i =1; i<=sentences;i++){
+            $.ajax({
+                type: type,
+                url: "{% url 'text' %}",
+                data: data,
+                success: function (data) {
+                    $("#output-" + i).class = "intro";
+                    $("#output-" + i).html("<h2>Review-" + i + "</h2> <hr>" +
+                        "<p>" +data['instance'] +"</p>");
+                },
+                error: function(data) {
+                    $("#output-" + i).html("Something went wrong!");
+                }
+            });
+            }
+        });
+        
+        button.click(function (e) {
+            let inputId=$('#inputid');
+        if (inputId.is(':visible'))
+        {
+            inputId.slideUp();
+            button.html("Show");
+        }else{
+            inputId.slideDown();
+            button.html("Hide");
+            $("#output").html("");
+        }});
+    </script>
+        {% endblock %}
