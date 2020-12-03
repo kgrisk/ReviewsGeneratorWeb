@@ -1,6 +1,6 @@
 # ReviewsGeneratorWeb
 
-This a simple single page application based on django. It uses a trained NLP encorer to generate a fake movie reviews on user request. User can specify the starting text of the review and the number of reviews he wants to generate.
+This a simple single page application based on django. It uses a trained NLP [encorer](NLP_Fastai2_Text_Generation_and_Classification.ipynb) to generate a fake movie reviews on user request. User can specify the starting text of the review and the number of reviews he wants to generate.
 
 
 ##  Installation Guide
